@@ -12,8 +12,8 @@ instagram_username: abdbali
 # facebook_username: mauricio.urraco
 linkedin_username: abdbali
 github_username:  abdbali
-medium_username: @abdbali
-# medium_url: lorem_ipsum.medium.com
+#medium_username: abdbali
+medium_url: https://medium.com/@abdbali
 # gplus_username:  lorem_ipsum
 
 exclude: ['package.json', 'src', 'node_modules', 'vendor']
