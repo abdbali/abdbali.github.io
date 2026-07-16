@@ -3,64 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Balı | Digital Card</title>
+    <title>Balı | Digital Profile</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body { 
-            margin: 0; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
             background: radial-gradient(circle at center, #1a2a24 0%, #050505 100%);
-            font-family: 'Inter', sans-serif; overflow: hidden; perspective: 1000px;
+            font-family: 'Inter', sans-serif; 
+            overflow: hidden; 
+            perspective: 1200px;
         }
-        /* Kart Stili */
-        .card {
-            width: 320px; height: 420px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 30px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding: 30px; color: white; transition: transform 0.2s ease-out;
-            transform-style: preserve-3d; margin-bottom: 40px;
+
+        /* 3D Tilt Wrapper */
+        .tilt-wrapper {
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
+            margin-bottom: 40px;
+            z-index: 10;
         }
-        /* İkon Bar Stili */
-        .social-bar {
-            display: flex; gap: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 15px 30px;
-            border-radius: 50px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+
+        /* Flip Container */
+        .card-inner {
+            width: 320px; 
+            height: 480px; 
+            position: relative; 
+            transform-style: preserve-3d; 
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            cursor: pointer;
         }
-        .icon { width: 30px; height: 30px; fill: white; opacity: 0.7; transition: 0.3s; }
-        .icon:hover { opacity: 1; transform: scale(1.1); }
         
-        h1 { font-size: 28px; margin: 10px 0; }
-        p { color: #aaa; font-size: 16px; margin: 0 0 20px; }
+        .card-inner.flipped { 
+            transform: rotateY(180deg); 
+        }
+        
+        /* Ön ve Arka Yüz Ortak Stiller (Glassmorphism) */
+        .face { 
+            position: absolute; 
+            width: 100%; 
+            height: 100%; 
+            backface-visibility: hidden; 
+            border-radius: 30px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            background: rgba(255, 255, 255, 0.03); 
+            backdrop-filter: blur(20px); 
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 0 20px rgba(255,255,255,0.05);
+            padding: 30px; 
+            color: white; 
+            text-align: center;
+        }
+        
+        .back { 
+            transform: rotateY(180deg); 
+            background: rgba(10, 20, 15, 0.6);
+        }
+
+        /* Profil Resmi ve Tipografi */
+        .profile-img {
+            width: 110px; 
+            height: 110px; 
+            border-radius: 50%; 
+            border: 2px solid rgba(255,255,255,0.3); 
+            margin-bottom: 20px; 
+            object-fit: cover;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+
+        h1 { font-size: 26px; font-weight: 600; margin-bottom: 5px; letter-spacing: 1px; }
+        h2 { font-size: 14px; font-weight: 300; color: #a8b8b0; margin-bottom: 20px; }
+        
+        /* Uzmanlık Etiketleri */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .tag {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            color: #ddd;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Arka Yüz Elemanları */
+        .qr-placeholder { 
+            width: 160px; 
+            height: 160px; 
+            background: rgba(255,255,255,0.05); 
+            border-radius: 15px; 
+            border: 2px dashed rgba(255,255,255,0.2); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: #777; 
+            font-size: 12px; 
+            margin-bottom: 20px;
+            overflow: hidden;
+            padding: 10px;
+        }
+        .qr-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .motto { font-size: 12px; font-style: italic; color: #888; line-height: 1.5; }
+
+        /* Sosyal Medya Bar (Glassmorphism) */
+        .social-bar { 
+            display: flex; 
+            gap: 25px; 
+            background: rgba(255, 255, 255, 0.03); 
+            padding: 15px 40px; 
+            border-radius: 50px; 
+            backdrop-filter: blur(15px); 
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            z-index: 10;
+        }
+        .social-icon { 
+            width: 24px; 
+            height: 24px; 
+            fill: #a8b8b0; 
+            transition: all 0.3s ease; 
+        }
+        .social-bar a:hover .social-icon { 
+            fill: #fff; 
+            transform: translateY(-3px) scale(1.1); 
+        }
+        .tap-hint {
+            position: absolute;
+            bottom: 20px;
+            font-size: 10px;
+            color: rgba(255,255,255,0.3);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
 
-    <div class="card" id="card">
-        <div style="width: 100px; height: 100px; border-radius: 50%; background: #333; margin-bottom: 20px;"></div>
-        <h1>Balı</h1>
-        <p>STEM & Vibe Coding</p>
+    <!-- 3D Hareket Kapsayıcısı -->
+    <div class="tilt-wrapper" id="tilt-wrapper">
+        <!-- Dönme Efekti Kapsayıcısı -->
+        <div class="card-inner" id="card-inner" onclick="this.classList.toggle('flipped')">
+            
+            <!-- ÖN YÜZ -->
+            <div class="face front">
+                <img src="https://avatars.githubusercontent.com/u/75204782?v=4" alt="Balı" class="profile-img">
+                <h1>Balı</h1>
+                <h2>STEM & Vibe Coding</h2>
+                
+                <div class="tags-container">
+                    <span class="tag">AI & Machine Learning</span>
+                    <span class="tag">Aerospace</span>
+                    <span class="tag">XR / VR</span>
+                    <span class="tag">Robotics & Arduino</span>
+                </div>
+                
+                <span class="tap-hint">Tap to flip</span>
+            </div>
+
+            <!-- ARKA YÜZ -->
+            <div class="face back">
+                <div class="qr-placeholder">
+                    <!-- QR kodunu eklemek için aşağıdaki satırı yorumdan çıkar ve resim yolunu belirt -->
+                    <!-- <img src="qr-kodunun-adi.png" alt="QR Code"> -->
+                    Add QR PNG Here
+                </div>
+                <p style="font-weight: 600; margin-bottom: 10px;">Scan to Connect</p>
+                <p class="motto">“Discover learning through technology and innovation, think creatively, and shape the future.”</p>
+            </div>
+            
+        </div>
     </div>
 
-    <!-- Sosyal Medya İkonları (Glass) -->
+    <!-- SOSYAL MEDYA İKONLARI -->
     <div class="social-bar">
-        <a href="https://www.youtube.com/@abdbali"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" class="icon"></a>
-        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384014.png" class="icon"></a>
-        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1384/1384015.png" class="icon"></a>
+        <!-- YouTube -->
+        <a href="https://www.youtube.com/@abdbali" target="_blank" title="YouTube">
+            <svg class="social-icon" viewBox="0 0 24 24"><path d="M21.582,6.186c-0.23-0.86-0.908-1.538-1.768-1.768C18.254,4,12,4,12,4S5.746,4,4.186,4.418c-0.86,0.23-1.538,0.908-1.768,1.768C2,7.746,2,12,2,12s0,4.254,0.418,5.814c0.23,0.86,0.908,1.538,1.768,1.768C5.746,20,12,20,12,20s6.254,0,7.814-0.418c0.861-0.23,1.538-0.908,1.768-1.768C22,16.254,22,12,22,12S22,7.746,21.582,6.186z M10,15.464V8.536L16,12L10,15.464z"/></svg>
+        </a>
+        <!-- GitHub -->
+        <a href="https://github.com/abdbali" target="_blank" title="GitHub">
+            <svg class="social-icon" viewBox="0 0 24 24"><path d="M12,2C6.477,2,2,6.477,2,12c0,4.419,2.865,8.166,6.839,9.489c0.5,0.09,0.682-0.218,0.682-0.484c0-0.236-0.009-0.864-0.014-1.695C6.722,20.09,6.13,18.135,6.13,18.135c-0.455-1.151-1.11-1.46-1.11-1.46c-0.908-0.62,0.069-0.608,0.069-0.608c1.004,0.071,1.532,1.03,1.532,1.03c0.892,1.529,2.341,1.089,2.91,0.831c0.091-0.645,0.349-1.089,0.635-1.338c-2.225-0.253-4.565-1.112-4.565-4.943c0-1.091,0.39-1.984,1.031-2.682C6.574,8.711,6.228,7.697,6.678,6.316c0,0,0.841-0.269,2.748,1.021C10.226,7.115,11.114,7.004,12,7c0.885,0.004,1.773,0.115,2.573,0.337c1.906-1.291,2.746-1.021,2.746-1.021c0.451,1.381,0.105,2.395,0.003,2.651c0.643,0.698,1.03,1.591,1.03,2.682c0,3.84-2.343,4.687-4.576,4.936c0.359,0.309,0.678,0.919,0.678,1.852c0,1.336-0.012,2.415-0.012,2.743c0,0.269,0.18,0.579,0.688,0.481C19.138,20.161,22,16.416,22,12C22,6.477,17.523,2,12,2z"/></svg>
+        </a>
+        <!-- Portfolio / Web -->
+        <a href="https://www.worldspaceweek.org/events/?eventID=98459" target="_blank" title="Portfolio">
+            <svg class="social-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+        </a>
     </div>
 
     <script>
-        const card = document.getElementById('card');
+        const wrapper = document.getElementById('tilt-wrapper');
+        
+        // Masaüstü için pürüzsüz 3D Fare Takibi
         document.addEventListener('mousemove', (e) => {
-            const x = (window.innerWidth / 2 - e.pageX) / 25;
-            const y = (window.innerHeight / 2 - e.pageY) / 25;
-            card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 30;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 30;
+            wrapper.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
         });
+
+        // Mobil Cihazlar için Jiroskop (Hareket Sensörü)
         window.addEventListener('deviceorientation', (e) => {
-            card.style.transform = `rotateX(${e.beta}deg) rotateY(${e.gamma}deg)`;
+            // Sensör verilerini sınırlandırarak aşırı dönmeleri engelliyoruz
+            let xAxis = Math.max(-25, Math.min(25, e.gamma)); 
+            let yAxis = Math.max(-25, Math.min(25, e.beta - 45)); 
+            wrapper.style.transform = `rotateY(${xAxis}deg) rotateX(${-yAxis}deg)`;
         });
     </script>
 </body>
