@@ -13,10 +13,13 @@
             padding: 0;
         }
 
+        /* 100dvh ve overscroll kilidi ile mobil beyaz çizgiler tamamen engellendi */
         html, body { 
-            width: 100vw;
-            height: 100vh; 
+            width: 100dvw;
+            height: 100dvh; 
             overflow: hidden;
+            overscroll-behavior: none; /* Sayfa esnemesini engeller */
+            background-color: #030805; /* Beyaz parlamayı önleyen taban rengi */
             font-family: 'Inter', sans-serif; 
             background: linear-gradient(-45deg, #030805, #11261a, #050505, #0d2116);
             background-size: 400% 400%;
@@ -50,24 +53,23 @@
             pointer-events: none;
         }
 
-        /* Animasyon taşıyıcısı */
         .repo-tracker {
             position: absolute;
             bottom: -100px;
             animation: floatUp linear infinite;
         }
 
-        /* TIKLANABİLİR CAM REPO KARTLARI (Boyutlar büyütüldü) */
+        /* PC İÇİN REPO BOYUTLARI */
         .floating-repo {
             display: block;
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 14px 24px; /* Padding artırıldı */
+            padding: 14px 24px;
             border-radius: 18px;
             color: rgba(255, 255, 255, 0.55);
-            font-size: 15px; /* Yazı boyutu büyütüldü */
+            font-size: 15px;
             font-weight: 500;
             letter-spacing: 0.5px;
             text-decoration: none;
@@ -76,7 +78,6 @@
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        /* Hover efekti */
         .floating-repo:hover {
             background: rgba(255, 255, 255, 0.15);
             border-color: rgba(255, 255, 255, 0.25);
@@ -85,24 +86,17 @@
             box-shadow: 0 15px 30px rgba(22, 43, 34, 0.8);
         }
 
-        /* Eğimsiz, dümdüz yukarı süzülme animasyonu */
         @keyframes floatUp {
-            0% {
-                transform: translateY(0); /* rotate kaldırıldı */
-                opacity: 0;
-            }
+            0% { transform: translateY(0); opacity: 0; }
             10% { opacity: 1; }
             90% { opacity: 1; }
-            100% {
-                transform: translateY(-130vh); /* rotate kaldırıldı */
-                opacity: 0;
-            }
+            100% { transform: translateY(-135vh); opacity: 0; }
         }
 
         /* 3D TILT WRAPPER (Ana Kart) */
         .tilt-wrapper {
             transform-style: preserve-3d;
-            transition: transform 0.1s ease-out;
+            transition: transform 0.15s ease-out; /* Mobilde daha yumuşak takip için esnetildi */
             margin-bottom: 30px;
             z-index: 10;
         }
@@ -184,11 +178,9 @@
             font-size: 11px; 
             margin-bottom: 20px;
         }
-        .qr-placeholder img { width: 100%; height: 100%; object-fit: contain; }
         .motto { font-size: 12px; font-style: italic; color: #888; line-height: 1.5; }
         .tap-hint { position: absolute; bottom: 15px; font-size: 10px; color: rgba(255,255,255,0.25); letter-spacing: 1px; text-transform: uppercase; }
 
-        /* SOSYAL MEDYA BAR */
         .social-bar { 
             display: flex; 
             gap: 25px; 
@@ -202,6 +194,24 @@
         }
         .social-icon { width: 22px; height: 22px; fill: #a8b8b0; transition: all 0.3s ease; }
         .social-bar a:hover .social-icon { fill: #fff; transform: translateY(-3px); }
+
+        /* MOBİL CİHAZ OPTİMİZASYONU (EKRAN GENİŞLİĞİ 480PX VE ALTI) */
+        @media (max-width: 480px) {
+            .floating-repo {
+                padding: 8px 14px; /* Mobilde daha küçük kutular */
+                font-size: 12px;     /* Mobilde ideal okunabilirlik boyutu */
+                border-radius: 12px;
+                background: rgba(255, 255, 255, 0.04);
+            }
+            .card-inner {
+                width: 290px; /* Küçük ekranlar için kart daraltıldı */
+                height: 430px;
+            }
+            h1 { font-size: 23px; }
+            h2 { font-size: 13px; }
+            .profile-img { width: 95px; height: 95px; }
+            .social-bar { padding: 10px 30px; gap: 20px; }
+        }
     </style>
 </head>
 <body>
@@ -232,7 +242,6 @@
             <!-- ARKA YÜZ -->
             <div class="face back">
                 <div class="qr-placeholder">
-                    <!-- <img src="qr.png" alt="QR Code"> -->
                     PNG QR CODE HERE
                 </div>
                 <p style="font-weight: 600; margin-bottom: 8px; font-size: 14px;">Scan to Connect</p>
@@ -255,22 +264,35 @@
     <script>
         const wrapper = document.getElementById('tilt-wrapper');
         const repoBg = document.getElementById('repo-bg');
+        const isMobile = window.innerWidth <= 480;
         
-        // 3D Fare Takibi
-        document.addEventListener('mousemove', (e) => {
-            const xAxis = (window.innerWidth / 2 - e.pageX) / 30;
-            const yAxis = (window.innerHeight / 2 - e.pageY) / 30;
-            wrapper.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        // PC İÇİN: Mouse Takip Efekti
+        if (!isMobile) {
+            document.addEventListener('mousemove', (e) => {
+                const xAxis = (window.innerWidth / 2 - e.pageX) / 30;
+                const yAxis = (window.innerHeight / 2 - e.pageY) / 30;
+                wrapper.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+            });
+        }
+
+        // MOBİL İÇİN: Dokunmatik Ekran Takip Efekti (Jiroskop İzin Sorunlarını Çözer)
+        document.addEventListener('touchmove', (e) => {
+            if (e.touches.length > 0) {
+                const touch = e.touches[0];
+                // Hassasiyeti ayarlamak için bölme katsayıları optimize edildi
+                const xAxis = (window.innerWidth / 2 - touch.clientX) / 15;
+                const yAxis = (window.innerHeight / 2 - touch.clientY) / 20;
+                wrapper.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+            }
+        }, { passive: true });
+
+        // Parmağını ekrandan çektiğinde kartı yumuşakça merkeze sıfırla
+        document.addEventListener('touchend', () => {
+            wrapper.style.transform = `rotateY(0deg) rotateX(0deg)`;
         });
 
-        // Mobil Jiroskop
-        window.addEventListener('deviceorientation', (e) => {
-            let xAxis = Math.max(-20, Math.min(20, e.gamma)); 
-            let yAxis = Math.max(-20, Math.min(20, e.beta - 45)); 
-            wrapper.style.transform = `rotateY(${xAxis}deg) rotateX(${-yAxis}deg)`;
-        });
 
-        // GİTHUB REPO ÇEKME FONKSİYONU
+        // REPO ÇEKME VE MOBİL UYUMLU DAĞITIM FONKSİYONU
         async function loadGitHubRepos() {
             try {
                 const response = await fetch('https://api.github.com/users/abdbali/repos?per_page=100');
@@ -281,7 +303,10 @@
                     repo.name.toLowerCase() !== 'abdbali.github.io'
                 );
 
-                filtered.forEach((repo, i) => {
+                // Mobilde ekranı boğmamak için maksimum 25 aktif repo gösteriyoruz, PC'de hepsi akıyor
+                const displayRepos = isMobile ? filtered.slice(0, 25) : filtered;
+
+                displayRepos.forEach((repo, i) => {
                     const tracker = document.createElement('div');
                     tracker.className = 'repo-tracker';
                     
@@ -293,9 +318,9 @@
                     
                     tracker.appendChild(anchor);
                     
-                    // Yatay yayılım alanları ve süreler
-                    const randomLeft = Math.random() * 80; 
-                    const randomDelay = Math.random() * 15; 
+                    // Mobilde taşmayı önlemek için yatay dağılım sınırlandırıldı (%70), PC'de %82
+                    const randomLeft = Math.random() * (isMobile ? 70 : 82); 
+                    const randomDelay = Math.random() * 16; 
                     const randomDuration = 12 + Math.random() * 15; 
                     
                     tracker.style.left = `${randomLeft}%`;
@@ -305,7 +330,7 @@
                     repoBg.appendChild(tracker);
                 });
             } catch (error) {
-                console.log("GitHub API limit or error. Using placeholders.");
+                console.log("GitHub API hatası. Yedek elemanlar yükleniyor.");
                 const fallbacks = [
                     {name: 'Alpha-Flow', url: '#'},
                     {name: 'Mentor-Chrome', url: 'https://www.worldspaceweek.org/events/?eventID=98459'},
@@ -322,7 +347,7 @@
                     anchor.innerText = item.name;
                     
                     tracker.appendChild(anchor);
-                    tracker.style.left = `${i * 22}%`;
+                    tracker.style.left = `${i * (isMobile ? 20 : 22)}%`;
                     tracker.style.animationDelay = `${i * 2}s`;
                     tracker.style.animationDuration = '18s';
                     repoBg.appendChild(tracker);
