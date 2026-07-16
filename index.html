@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Balı | Digital Profile</title>
+    <title>Abdurrahman Balı</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
 
@@ -13,17 +13,16 @@
             padding: 0;
         }
 
-        /* Mobil beyazlıkları önlemek için html ve body tam kaplama */
+        /* PC ve Mobil ekran hatalarını sıfırlayan tam ekran kilidi */
         html, body { 
-            width: 100%;
-            min-height: 100vh; 
-            min-height: -webkit-fill-available;
+            width: 100vw;
+            height: 100vh; 
             overflow: hidden;
             font-family: 'Inter', sans-serif; 
-            /* Canlı ve akıcı gradyan arka plan */
-            background: linear-gradient(-45deg, #050c08, #112219, #050505, #0c1a12);
+            /* Daha dinamik ve aktif geçişli gradyan arka plan */
+            background: linear-gradient(-45deg, #030805, #11261a, #050505, #0d2116);
             background-size: 400% 400%;
-            animation: gradientAnimation 15s ease infinite;
+            animation: gradientAnimation 10s ease infinite; /* Hızlandırıldı (Daha aktif) */
         }
 
         body {
@@ -33,7 +32,6 @@
             align-items: center; 
             perspective: 1200px;
             position: relative;
-            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         }
 
         @keyframes gradientAnimation {
@@ -42,7 +40,7 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* ARKA PLAN REPO AKIŞI ALANI */
+        /* ARKA PLAN REPO ALANI */
         .repo-bg-container {
             position: absolute;
             top: 0;
@@ -51,25 +49,42 @@
             height: 100%;
             overflow: hidden;
             z-index: 1;
-            pointer-events: none; /* Kartların tıklamayı engellememesi için */
+            pointer-events: none; /* Boş alanların tıklamayı engellememesi için */
         }
 
-        /* Yukarı süzülen cam repo kartları */
-        .floating-repo {
+        /* Animasyon taşıyıcısı */
+        .repo-tracker {
             position: absolute;
             bottom: -100px;
-            background: rgba(255, 255, 255, 0.02);
+            animation: floatUp linear infinite;
+        }
+
+        /* TIKLANABİLİR CAM REPO KARTLARI */
+        .floating-repo {
+            display: block;
+            background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 10px 16px;
-            border-radius: 14px;
-            color: rgba(255, 255, 255, 0.45);
-            font-size: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 12px 20px;
+            border-radius: 16px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 13px;
+            font-weight: 500;
             letter-spacing: 0.5px;
-            white-space: nowrap;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            animation: floatUp linear infinite;
+            text-decoration: none;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            pointer-events: auto; /* Kartların kendisini tıklanabilir yapar */
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* Repo kartı üzerine gelindiğinde (Hover efekti) */
+        .floating-repo:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.25);
+            color: #fff;
+            transform: scale(1.12) translateY(-2px);
+            box-shadow: 0 15px 30px rgba(22, 43, 34, 0.8);
         }
 
         @keyframes floatUp {
@@ -80,7 +95,7 @@
             10% { opacity: 1; }
             90% { opacity: 1; }
             100% {
-                transform: translateY(-115vh) rotate(15deg);
+                transform: translateY(-125vh) rotate(15deg);
                 opacity: 0;
             }
         }
@@ -90,7 +105,7 @@
             transform-style: preserve-3d;
             transition: transform 0.1s ease-out;
             margin-bottom: 30px;
-            z-index: 10; /* Arka plandaki repoların önüne almak için */
+            z-index: 10;
         }
 
         .card-inner {
@@ -120,7 +135,7 @@
             backdrop-filter: blur(25px); 
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid rgba(255, 255, 255, 0.08); 
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 0 20px rgba(255,255,255,0.02);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
             padding: 30px; 
             color: white; 
             text-align: center;
@@ -184,7 +199,7 @@
             backdrop-filter: blur(15px); 
             -webkit-backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.06); 
-            z-index: 10;
+            z-index: 12;
         }
         .social-icon { width: 22px; height: 22px; fill: #a8b8b0; transition: all 0.3s ease; }
         .social-bar a:hover .social-icon { fill: #fff; transform: translateY(-3px); }
@@ -192,7 +207,7 @@
 </head>
 <body>
 
-    <!-- ARKA PLANDAKİ CANLI REPO AKIŞI ALANI -->
+    <!-- CANLI REPO AKIŞI -->
     <div class="repo-bg-container" id="repo-bg"></div>
 
     <!-- MERKEZİ KART -->
@@ -206,7 +221,7 @@
                 <h2>STEM & Vibe Coding</h2>
                 
                 <div class="tags-container">
-                    <span class="tag">AI & Machine Learning</span>
+                    <span class="tag">AI & NLP</span>
                     <span class="tag">Aerospace</span>
                     <span class="tag">XR / VR</span>
                     <span class="tag">Robotics</span>
@@ -228,7 +243,7 @@
         </div>
     </div>
 
-    <!-- SOSYAL MEDYA ILAÇ BAR -->
+    <!-- SOSYAL MEDYA BAR -->
     <div class="social-bar">
         <a href="https://www.youtube.com/@abdbali" target="_blank">
             <svg class="social-icon" viewBox="0 0 24 24"><path d="M21.582,6.186c-0.23-0.86-0.908-1.538-1.768-1.768C18.254,4,12,4,12,4S5.746,4,4.186,4.418c-0.86,0.23-1.538,0.908-1.768,1.768C2,7.746,2,12,2,12s0,4.254,0.418,5.814c0.23,0.86,0.908,1.538,1.768,1.768C5.746,20,12,20,12,20s6.254,0,7.814-0.418c0.861-0.23,1.538-0.908,1.768-1.768C22,16.254,22,12,22,12S22,7.746,21.582,6.186z M10,15.464V8.536L16,12L10,15.464z"/></svg>
@@ -242,7 +257,7 @@
         const wrapper = document.getElementById('tilt-wrapper');
         const repoBg = document.getElementById('repo-bg');
         
-        // Masaüstü 3D Fare Takibi
+        // 3D Fare Takibi
         document.addEventListener('mousemove', (e) => {
             const xAxis = (window.innerWidth / 2 - e.pageX) / 30;
             const yAxis = (window.innerHeight / 2 - e.pageY) / 30;
@@ -256,52 +271,70 @@
             wrapper.style.transform = `rotateY(${xAxis}deg) rotateX(${-yAxis}deg)`;
         });
 
-        // DİNAMİK GİTHUB REPO ÇEKME VE SÜZDÜRME FONKSİYONU
+        // GİTHUB REPO ÇEKME VE TIKLANABİLİR YAPMA FONKSİYONU
         async function loadGitHubRepos() {
             try {
                 const response = await fetch('https://api.github.com/users/abdbali/repos?per_page=100');
                 const repos = await response.json();
                 
-                // Belirtilen repoları filtrele
+                // Filtreleme
                 const filtered = repos.filter(repo => 
                     repo.name.toLowerCase() !== 'abdbali' && 
                     repo.name.toLowerCase() !== 'abdbali.github.io'
                 );
 
-                // Filtrelenmiş repoları ekrana süzülen kartlar olarak bas
                 filtered.forEach((repo, i) => {
-                    const card = document.createElement('div');
-                    card.className = 'floating-repo';
-                    card.innerText = repo.name;
+                    // Animasyonu üstlenen taşıyıcı div
+                    const tracker = document.createElement('div');
+                    tracker.className = 'repo-tracker';
                     
-                    // Rastgele konumlama ve hız atamaları (Yavaş kayma efekti)
-                    const randomLeft = Math.random() * 82; // Ekrana yayılım yüzdesi
-                    const randomDelay = Math.random() * 25; // Başlangıç gecikmeleri
-                    const randomDuration = 20 + Math.random() * 20; // Süzülme hızı (20-40sn arası, oldukça yavaş)
+                    // Tıklanabilir asıl anchor link elementi
+                    const anchor = document.createElement('a');
+                    anchor.className = 'floating-repo';
+                    anchor.href = repo.html_url;
+                    anchor.target = '_blank';
+                    anchor.innerText = repo.name;
                     
-                    card.style.left = `${randomLeft}%`;
-                    card.style.animationDelay = `${randomDelay}s`;
-                    card.style.animationDuration = `${randomDuration}s`;
+                    tracker.appendChild(anchor);
                     
-                    repoBg.appendChild(card);
+                    // Rastgele konumlama ve hızlar (Daha aktif akış için hızlandırıldı)
+                    const randomLeft = Math.random() * 84; 
+                    const randomDelay = Math.random() * 15; 
+                    const randomDuration = 12 + Math.random() * 15; // 12-27sn arası dinamik akış
+                    
+                    tracker.style.left = `${randomLeft}%`;
+                    tracker.style.animationDelay = `${randomDelay}s`;
+                    tracker.style.animationDuration = `${randomDuration}s`;
+                    
+                    repoBg.appendChild(tracker);
                 });
             } catch (error) {
-                console.log("GitHub repos couldn't be loaded, using fallbacks.");
-                // API hata verirse yedek şık tasarım elemanları
-                const fallbacks = ['Alpha-Flow', 'Mentor-Chrome', 'STEM-Sustainability', 'Robotics-UAV', 'XR-Models'];
-                fallbacks.forEach((name, i) => {
-                    const card = document.createElement('div');
-                    card.className = 'floating-repo';
-                    card.innerText = name;
-                    card.style.left = `${i * 18}%`;
-                    card.style.animationDelay = `${i * 3}s`;
-                    card.style.animationDuration = '25s';
-                    repoBg.appendChild(card);
+                console.log("GitHub API limit or error. Using fallback placeholders.");
+                const fallbacks = [
+                    {name: 'Alpha-Flow', url: '#'},
+                    {name: 'Mentor-Chrome', url: 'https://www.worldspaceweek.org/events/?eventID=98459'},
+                    {name: 'STEM-Sustainability', url: '#'},
+                    {name: 'Robotics-UAV', url: '#'},
+                    {name: 'XR-Educational-Models', url: '#'}
+                ];
+                fallbacks.forEach((item, i) => {
+                    const tracker = document.createElement('div');
+                    tracker.className = 'repo-tracker';
+                    const anchor = document.createElement('a');
+                    anchor.className = 'floating-repo';
+                    anchor.href = item.url;
+                    anchor.target = '_blank';
+                    anchor.innerText = item.name;
+                    
+                    tracker.appendChild(anchor);
+                    tracker.style.left = `${i * 18}%`;
+                    tracker.style.animationDelay = `${i * 2}s`;
+                    tracker.style.animationDuration = '18s';
+                    repoBg.appendChild(tracker);
                 });
             }
         }
 
-        // Sayfa yüklendiğinde repoları getir
         window.addEventListener('DOMContentLoaded', loadGitHubRepos);
     </script>
 </body>
