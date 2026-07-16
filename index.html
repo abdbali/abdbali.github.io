@@ -1,42 +1,55 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Balı | STEM & Vibe Coding</title>
+    <title>Balı | Digital Card</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; max-width: 800px; margin: 40px auto; padding: 0 20px; color: #333; }
-        header { border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 30px; }
-        h1 { margin: 0; color: #000; }
-        .motto { font-style: italic; color: #666; margin-top: 10px; }
-        .section { margin-bottom: 30px; }
-        h2 { border-left: 4px solid #000; padding-left: 10px; }
-        ul { list-style: none; padding: 0; }
-        li { margin-bottom: 10px; }
-        .btn { display: inline-block; padding: 10px 20px; background: #000; color: #fff; text-decoration: none; border-radius: 5px; margin-top: 10px; }
+        body { margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; background: #0a0a0a; perspective: 1000px; }
+        
+        .card {
+            width: 320px; height: 450px;
+            background: #161616;
+            border-radius: 20px;
+            border: 1px solid #333;
+            transition: transform 0.1s ease-out;
+            transform-style: preserve-3d;
+            cursor: grab;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            color: #e0e0e0;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        h1 { font-size: 24px; margin-bottom: 10px; color: #fff; }
+        .motto { font-size: 13px; font-style: italic; color: #888; margin-bottom: 20px; }
+        .tag { background: #222; padding: 4px 8px; border-radius: 4px; font-size: 11px; margin: 2px; display: inline-block; }
+        .links { margin-top: 20px; }
+        a { color: #fff; text-decoration: none; border-bottom: 1px solid #fff; font-size: 14px; }
     </style>
 </head>
 <body>
 
-    <header>
+    <div class="card" id="card">
         <h1>Balı</h1>
-        <p class="motto">“Discover learning through technology and innovation, think creatively, and shape the future.”</p>
-    </header>
+        <p class="motto">“Discover learning through technology and innovation.”</p>
+        <div>
+            <span class="tag">AI & Machine Learning</span>
+            <span class="tag">Aerospace</span>
+            <span class="tag">XR/VR</span>
+            <span class="tag">Robotics</span>
+        </div>
+        <div class="links"><a href="https://www.youtube.com/@abdbali">YouTube Channel</a></div>
+    </div>
 
-    <section class="section">
-        <h2>Hakkımda</h2>
-        <p>Vibe Coding, STEM ve dijital beceriler üzerine odaklanan bir eğitimciyim. Makine öğrenimi, havacılık ve yapay zekayı öğrenme süreçlerine entegre ediyorum.</p>
-    </section>
-
-    <section class="section">
-        <h2>Uzmanlık & Projeler</h2>
-        <ul>
-            <li><strong>Robotik:</strong> Arduino, İHA (Drone) ve kodlama atölyeleri.</li>
-            <li><strong>XR/VR:</strong> Eğitim odaklı sanal ve artırılmış gerçeklik modelleri.</li>
-            <li><strong>Mentörlük:</strong> Teknofest ve TÜBİTAK proje süreçleri.</li>
-        </ul>
-        <a href="https://www.youtube.com/@abdbali" class="btn">YouTube Kanalım</a>
-    </section>
-
+    <script>
+        const card = document.getElementById('card');
+        document.addEventListener('mousemove', (e) => {
+            const x = (window.innerWidth / 2 - e.pageX) / 20;
+            const y = (window.innerHeight / 2 - e.pageY) / 20;
+            card.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+        });
+    </script>
 </body>
 </html>
