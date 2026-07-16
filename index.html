@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Abdurrahman Balı</title>
+    <title>Balı | Digital Profile</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
 
@@ -13,16 +13,14 @@
             padding: 0;
         }
 
-        /* PC ve Mobil ekran hatalarını sıfırlayan tam ekran kilidi */
         html, body { 
             width: 100vw;
             height: 100vh; 
             overflow: hidden;
             font-family: 'Inter', sans-serif; 
-            /* Daha dinamik ve aktif geçişli gradyan arka plan */
             background: linear-gradient(-45deg, #030805, #11261a, #050505, #0d2116);
             background-size: 400% 400%;
-            animation: gradientAnimation 10s ease infinite; /* Hızlandırıldı (Daha aktif) */
+            animation: gradientAnimation 10s ease infinite;
         }
 
         body {
@@ -49,7 +47,7 @@
             height: 100%;
             overflow: hidden;
             z-index: 1;
-            pointer-events: none; /* Boş alanların tıklamayı engellememesi için */
+            pointer-events: none;
         }
 
         /* Animasyon taşıyıcısı */
@@ -59,43 +57,44 @@
             animation: floatUp linear infinite;
         }
 
-        /* TIKLANABİLİR CAM REPO KARTLARI */
+        /* TIKLANABİLİR CAM REPO KARTLARI (Boyutlar büyütüldü) */
         .floating-repo {
             display: block;
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 12px 20px;
-            border-radius: 16px;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 13px;
+            padding: 14px 24px; /* Padding artırıldı */
+            border-radius: 18px;
+            color: rgba(255, 255, 255, 0.55);
+            font-size: 15px; /* Yazı boyutu büyütüldü */
             font-weight: 500;
             letter-spacing: 0.5px;
             text-decoration: none;
             box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-            pointer-events: auto; /* Kartların kendisini tıklanabilir yapar */
+            pointer-events: auto;
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        /* Repo kartı üzerine gelindiğinde (Hover efekti) */
+        /* Hover efekti */
         .floating-repo:hover {
             background: rgba(255, 255, 255, 0.15);
             border-color: rgba(255, 255, 255, 0.25);
             color: #fff;
-            transform: scale(1.12) translateY(-2px);
+            transform: scale(1.1) translateY(-2px);
             box-shadow: 0 15px 30px rgba(22, 43, 34, 0.8);
         }
 
+        /* Eğimsiz, dümdüz yukarı süzülme animasyonu */
         @keyframes floatUp {
             0% {
-                transform: translateY(0) rotate(0deg);
+                transform: translateY(0); /* rotate kaldırıldı */
                 opacity: 0;
             }
             10% { opacity: 1; }
             90% { opacity: 1; }
             100% {
-                transform: translateY(-125vh) rotate(15deg);
+                transform: translateY(-130vh); /* rotate kaldırıldı */
                 opacity: 0;
             }
         }
@@ -221,7 +220,7 @@
                 <h2>STEM & Vibe Coding</h2>
                 
                 <div class="tags-container">
-                    <span class="tag">AI & NLP</span>
+                    <span class="tag">AI & Machine Learning</span>
                     <span class="tag">Aerospace</span>
                     <span class="tag">XR / VR</span>
                     <span class="tag">Robotics</span>
@@ -271,24 +270,21 @@
             wrapper.style.transform = `rotateY(${xAxis}deg) rotateX(${-yAxis}deg)`;
         });
 
-        // GİTHUB REPO ÇEKME VE TIKLANABİLİR YAPMA FONKSİYONU
+        // GİTHUB REPO ÇEKME FONKSİYONU
         async function loadGitHubRepos() {
             try {
                 const response = await fetch('https://api.github.com/users/abdbali/repos?per_page=100');
                 const repos = await response.json();
                 
-                // Filtreleme
                 const filtered = repos.filter(repo => 
                     repo.name.toLowerCase() !== 'abdbali' && 
                     repo.name.toLowerCase() !== 'abdbali.github.io'
                 );
 
                 filtered.forEach((repo, i) => {
-                    // Animasyonu üstlenen taşıyıcı div
                     const tracker = document.createElement('div');
                     tracker.className = 'repo-tracker';
                     
-                    // Tıklanabilir asıl anchor link elementi
                     const anchor = document.createElement('a');
                     anchor.className = 'floating-repo';
                     anchor.href = repo.html_url;
@@ -297,10 +293,10 @@
                     
                     tracker.appendChild(anchor);
                     
-                    // Rastgele konumlama ve hızlar (Daha aktif akış için hızlandırıldı)
-                    const randomLeft = Math.random() * 84; 
+                    // Yatay yayılım alanları ve süreler
+                    const randomLeft = Math.random() * 80; 
                     const randomDelay = Math.random() * 15; 
-                    const randomDuration = 12 + Math.random() * 15; // 12-27sn arası dinamik akış
+                    const randomDuration = 12 + Math.random() * 15; 
                     
                     tracker.style.left = `${randomLeft}%`;
                     tracker.style.animationDelay = `${randomDelay}s`;
@@ -309,11 +305,10 @@
                     repoBg.appendChild(tracker);
                 });
             } catch (error) {
-                console.log("GitHub API limit or error. Using fallback placeholders.");
+                console.log("GitHub API limit or error. Using placeholders.");
                 const fallbacks = [
                     {name: 'Alpha-Flow', url: '#'},
                     {name: 'Mentor-Chrome', url: 'https://www.worldspaceweek.org/events/?eventID=98459'},
-                    {name: 'STEM-Sustainability', url: '#'},
                     {name: 'Robotics-UAV', url: '#'},
                     {name: 'XR-Educational-Models', url: '#'}
                 ];
@@ -327,7 +322,7 @@
                     anchor.innerText = item.name;
                     
                     tracker.appendChild(anchor);
-                    tracker.style.left = `${i * 18}%`;
+                    tracker.style.left = `${i * 22}%`;
                     tracker.style.animationDelay = `${i * 2}s`;
                     tracker.style.animationDuration = '18s';
                     repoBg.appendChild(tracker);
