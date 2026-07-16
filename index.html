@@ -5,46 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Balı | Digital Card</title>
     <style>
-        body { margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; background: #0a0a0a; perspective: 1000px; }
-        
-        .card {
-            width: 320px; height: 450px;
-            background: #161616;
-            border-radius: 20px;
-            border: 1px solid #333;
-            transition: transform 0.1s ease-out;
-            transform-style: preserve-3d;
-            cursor: grab;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            color: #e0e0e0;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        body { 
+            margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; 
+            background: #fff; /* Arkaplan beyaz */
+            font-family: sans-serif; overflow: hidden; perspective: 1000px;
         }
-
-        h1 { font-size: 24px; margin-bottom: 10px; color: #fff; }
-        .motto { font-size: 13px; font-style: italic; color: #888; margin-bottom: 20px; }
-        .tag { background: #222; padding: 4px 8px; border-radius: 4px; font-size: 11px; margin: 2px; display: inline-block; }
-        .links { margin-top: 20px; }
-        a { color: #fff; text-decoration: none; border-bottom: 1px solid #fff; font-size: 14px; }
+        .card {
+            width: 300px; height: 420px;
+            background: rgba(0, 0, 0, 0.7); /* Siyah buzlu cam */
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 20px; text-align: center;
+            transition: transform 0.1s ease-out;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+        .profile-img {
+            width: 100px; height: 100px; background: #444; border-radius: 50%;
+            margin-bottom: 20px; border: 2px solid #fff;
+        }
+        h1 { font-size: 32px; margin: 0; }
+        p { font-size: 18px; margin: 10px 0; color: #ccc; }
+        .btn { 
+            margin-top: 20px; padding: 12px 25px; background: #fff; color: #000;
+            text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 16px;
+        }
     </style>
 </head>
 <body>
 
     <div class="card" id="card">
+        <div class="profile-img"></div> <!-- Profil resmi alanı -->
         <h1>Balı</h1>
-        <p class="motto">“Discover learning through technology and innovation.”</p>
-        <div>
-            <span class="tag">AI & Machine Learning</span>
-            <span class="tag">Aerospace</span>
-            <span class="tag">XR/VR</span>
-            <span class="tag">Robotics</span>
-        </div>
-        <div class="links"><a href="https://www.youtube.com/@abdbali">YouTube Channel</a></div>
+        <p>STEM & Vibe Coding</p>
+        <a href="https://www.youtube.com/@abdbali" class="btn">YouTube Channel</a>
     </div>
 
     <script>
         const card = document.getElementById('card');
+        // Hem Mouse hem de Telefon Jiroskopu için hareket sensörü
+        window.addEventListener('deviceorientation', (e) => {
+            const y = e.beta;  // Öne-arkaya eğim
+            const x = e.gamma; // Sağa-sola eğim
+            card.style.transform = `rotateX(${y}deg) rotateY(${x}deg)`;
+        });
+
         document.addEventListener('mousemove', (e) => {
             const x = (window.innerWidth / 2 - e.pageX) / 20;
             const y = (window.innerHeight / 2 - e.pageY) / 20;
