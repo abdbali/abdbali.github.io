@@ -250,7 +250,7 @@
         </div>
     </div>
 
-    <!-- SOSYAL MEDYA BAR -->
+    <!-- SOSYAL MEDYA BAR (Tüm ikonlar artık düzgünce bu kapsayıcının içinde) -->
     <div class="social-bar">
         <a href="https://www.youtube.com/@abdbali" target="_blank">
             <svg class="social-icon" viewBox="0 0 24 24"><path d="M21.582,6.186c-0.23-0.86-0.908-1.538-1.768-1.768C18.254,4,12,4,12,4S5.746,4,4.186,4.418c-0.86,0.23-1.538,0.908-1.768,1.768C2,7.746,2,12,2,12s0,4.254,0.418,5.814c0.23,0.86,0.908,1.538,1.768,1.768C5.746,20,12,20,12,20s6.254,0,7.814-0.418c0.861-0.23,1.538-0.908,1.768-1.768C22,16.254,22,12,22,12S22,7.746,21.582,6.186z M10,15.464V8.536L16,12L10,15.464z"/></svg>
@@ -270,89 +270,31 @@
         const repoBg = document.getElementById('repo-bg');
         const isMobile = window.innerWidth <= 480;
         
-        // PC İÇİN: Mouse Takip Efekti
+        // PC İÇİN: Fare (Mouse) Takip Efekti
         if (!isMobile) {
             document.addEventListener('mousemove', (e) => {
                 const xAxis = (window.innerWidth / 2 - e.pageX) / 30;
                 const yAxis = (window.innerHeight / 2 - e.pageY) / 30;
                 wrapper.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
             });
+        } else {
+            // MOBİL İÇİN: Sıfır İzinli Dokunmatik Ekran Takip Efekti
+            // Herhangi bir izin penceresi tetiklemeden sayfa açılır açılmaz doğrudan çalışır.
+            document.addEventListener('touchmove', (e) => {
+                if (e.touches.length > 0) {
+                    const touch = e.touches[0];
+                    // Bölme katsayıları hassasiyeti belirler (15 ve 20 ideal ayarlardır)
+                    const xAxis = (window.innerWidth / 2 - touch.clientX) / 15;
+                    const yAxis = (window.innerHeight / 2 - touch.clientY) / 20;
+                    wrapper.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+                }
+            }, { passive: true });
+
+            // Parmağını ekrandan çektiğinde kartı yumuşakça merkeze sıfırla
+            document.addEventListener('touchend', () => {
+                wrapper.style.transform = `rotateY(0deg) rotateX(0deg)`;
+            });
         }
-
-        // MOBİL İÇİN: Dokunmatik Ekran Takip Efekti (Jiroskop İzin Sorunlarını Çözer)
-        document.addEventListener('touchmove', (e) => {
-            if (e.touches.length > 0) {
-                const touch = e.touches[0];
-                // Hassasiyeti ayarlamak için bölme katsayıları optimize edildi
-                const xAxis = (window.innerWidth / 2 - touch.clientX) / 15;
-                const yAxis = (window.innerHeight / 2 - touch.clientY) / 20;
-                wrapper.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-            }
-        }, { passive: true });
-
-        // Parmağını ekrandan çektiğinde kartı yumuşakça merkeze sıfırla
-        document.addEventListener('touchend', () => {
-            wrapper.style.transform = `rotateY(0deg) rotateX(0deg)`;
-        });
-
-        // Jiroskop (Cihaz Eğimi) Takip Efekti
-        let gyroInitialized = false;
-
-        function initGyroscope() {
-            if (gyroInitialized) return;
-
-            // iOS 13+ cihazlar için izin isteme mekanizması
-            if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-                DeviceOrientationEvent.requestPermission()
-                    .then(response => {
-                        if (response === 'granted') {
-                            window.addEventListener('deviceorientation', handleOrientation);
-                            gyroInitialized = true;
-                        } else {
-                            console.warn('Jiroskop izni verilmedi.');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Jiroskop izin hatası:', error);
-                    });
-            } else {
-                // Android ve izin istemeyen eski iOS cihazlar için doğrudan başlat
-                window.addEventListener('deviceorientation', handleOrientation);
-                gyroInitialized = true;
-            }
-        }
-
-        function handleOrientation(e) {
-            // gamma: Sol-Sağ eğimi (-90 ile 90 derece arası) -> rotateY'yi tetikler
-            // beta: Ön-Arka eğimi (-180 ile 180 derece arası) -> rotateX'i tetikler
-            let gamma = e.gamma || 0; 
-            let beta = e.beta || 0;
-
-            // Telefonun normalde dik/hafif eğik tutulduğunu varsayalım (yaklaşık 60 derece)
-            // Bu sayede kullanıcı telefonu normal tutarken kart düz görünür.
-            const idealHoldingAngle = 60; 
-            
-            let tiltX = beta - idealHoldingAngle; // Ön-arka sapma
-            let tiltY = gamma;                    // Sağ-sol sapma
-
-            // Kartın aşırı dönüp bozulmaması için maksimum eğim sınırları (Örn: en fazla 15 derece)
-            const maxTilt = 15;
-            tiltX = Math.max(-maxTilt, Math.min(maxTilt, tiltX));
-            tiltY = Math.max(-maxTilt, Math.min(maxTilt, tiltY));
-
-            // Kartı yumuşatmak ve hareketi hissettirmek için değerleri biraz bölebilirsin
-            const sensitivity = 1.2; 
-            const finalX = -tiltX * sensitivity;
-            const finalY = tiltY * sensitivity;
-
-            // 3D dönüşü uygula
-            wrapper.style.transform = `rotateY(${finalY}deg) rotateX(${finalX}deg)`;
-        }
-
-        // Tarayıcı güvenlik politikaları gereği jiroskop izni bir kullanıcı dokunuşuyla tetiklenmelidir.
-        // Kullanıcı sayfada herhangi bir yere ilk dokunduğunda veya tıkladığında sistem çalışmaya başlar.
-        document.addEventListener('click', initGyroscope, { once: true });
-        document.addEventListener('touchstart', initGyroscope, { once: true });
         
         // REPO ÇEKME VE MOBİL UYUMLU DAĞITIM FONKSİYONU
         async function loadGitHubRepos() {
