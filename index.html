@@ -335,7 +335,8 @@
 
     <!-- İLETİŞİM MAİL ARDESİ GİRME ALANI -->
     <div class="contact-container">
-        <form id="contact-form" action="https://formsubmit.co/abdbali@hotmail.com" method="POST" class="contact-form">
+        <!-- /ajax/ endpoint'i eklendi -->
+        <form id="contact-form" action="https://formsubmit.co/ajax/abdbali@hotmail.com" method="POST" class="contact-form">
             <!-- Spam koruması ve Ayarlar -->
             <input type="text" name="_honey" style="display:none">
             <input type="hidden" name="_captcha" value="false">
@@ -436,7 +437,7 @@
             }
         }
 
-        // MAİL FORMU SEAMLESS (SAYFA YENİLENMEDEN) GÖNDERİM SİHRİ
+        // MAİL FORMU SEAMLESS (SAYFA YENİLENMEDEN) GÖNDERİM SİHRİ - GÜNCELLENDİ
         const form = document.getElementById('contact-form');
         const responseMsg = document.getElementById('form-response');
 
@@ -459,16 +460,20 @@
                         headers: { 'Accept': 'application/json' }
                     });
 
+                    const result = await response.json();
+
                     if (response.ok) {
                         responseMsg.style.color = '#4caf50';
                         responseMsg.innerText = 'E-posta adresiniz başarıyla iletildi!';
                         input.value = '';
                     } else {
-                        throw new Error();
+                        // FormSubmit API hata mesajını ekrana basıyoruz (Aktivasyon vb.)
+                        responseMsg.style.color = '#ffb300';
+                        responseMsg.innerText = result.message || 'Bir sorun oluştu.';
                     }
                 } catch (error) {
                     responseMsg.style.color = '#f44336';
-                    responseMsg.innerText = 'Bir hata oluştu, lütfen tekrar deneyin.';
+                    responseMsg.innerText = 'Bağlantı hatası, lütfen tekrar deneyin.';
                 } finally {
                     button.disabled = false;
                     button.innerText = 'Gönder';
