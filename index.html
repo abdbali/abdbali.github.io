@@ -258,12 +258,13 @@
         <a href="https://github.com/abdbali" target="_blank">
             <svg class="social-icon" viewBox="0 0 24 24"><path d="M12,2C6.477,2,2,6.477,2,12c0,4.419,2.865,8.166,6.839,9.489c0.5,0.09,0.682-0.218,0.682-0.484c0-0.236-0.009-0.864-0.014-1.695C6.722,20.09,6.13,18.135,6.13,18.135c-0.455-1.151-1.11-1.46-1.11-1.46c-0.908-0.62,0.069-0.608,0.069-0.608c1.004,0.071,1.532,1.03,1.532,1.03c0.892,1.529,2.341,1.089,2.91,0.831c0.091-0.645,0.349-1.089,0.635-1.338c-2.225-0.253-4.565-1.112-4.565-4.943c0-1.091,0.39-1.984,1.031-2.682C6.574,8.711,6.228,7.697,6.678,6.316c0,0,0.841-0.269,2.748,1.021C10.226,7.115,11.114,7.004,12,7c0.885,0.004,1.773,0.115,2.573,0.337c1.906-1.291,2.746-1.021,2.746-1.021c0.451,1.381,0.105,2.395,0.003,2.651c0.643,0.698,1.03,1.591,1.03,2.682c0,3.84-2.343,4.687-4.576,4.936c0.359,0.309,0.678,0.919,0.678,1.852c0,1.336-0.012,2.415-0.012,2.743c0,0.269,0.18,0.579,0.688,0.481C19.138,20.161,22,16.416,22,12C22,6.477,17.523,2,12,2z"/></svg>
         </a>
-    </div>
-<a href="https://www.linkedin.com/in/abdbali/" target="_blank">
+        <a href="https://www.linkedin.com/in/abdbali/" target="_blank">
             <svg class="social-icon" viewBox="0 0 24 24">
                 <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
             </svg>
         </a>
+    </div>
+
     <script>
         const wrapper = document.getElementById('tilt-wrapper');
         const repoBg = document.getElementById('repo-bg');
@@ -294,64 +295,64 @@
             wrapper.style.transform = `rotateY(0deg) rotateX(0deg)`;
         });
 
-// Jiroskop (Cihaz Eğimi) Takip Efekti
-let gyroInitialized = false;
+        // Jiroskop (Cihaz Eğimi) Takip Efekti
+        let gyroInitialized = false;
 
-function initGyroscope() {
-    if (gyroInitialized) return;
+        function initGyroscope() {
+            if (gyroInitialized) return;
 
-    // iOS 13+ cihazlar için izin isteme mekanizması
-    if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
-        DeviceOrientationEvent.requestPermission()
-            .then(response => {
-                if (response === 'granted') {
-                    window.addEventListener('deviceorientation', handleOrientation);
-                    gyroInitialized = true;
-                } else {
-                    console.warn('Jiroskop izni verilmedi.');
-                }
-            })
-            .catch(error => {
-                console.error('Jiroskop izin hatası:', error);
-            });
-    } else {
-        // Android ve izin istemeyen eski iOS cihazlar için doğrudan başlat
-        window.addEventListener('deviceorientation', handleOrientation);
-        gyroInitialized = true;
-    }
-}
+            // iOS 13+ cihazlar için izin isteme mekanizması
+            if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+                DeviceOrientationEvent.requestPermission()
+                    .then(response => {
+                        if (response === 'granted') {
+                            window.addEventListener('deviceorientation', handleOrientation);
+                            gyroInitialized = true;
+                        } else {
+                            console.warn('Jiroskop izni verilmedi.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Jiroskop izin hatası:', error);
+                    });
+            } else {
+                // Android ve izin istemeyen eski iOS cihazlar için doğrudan başlat
+                window.addEventListener('deviceorientation', handleOrientation);
+                gyroInitialized = true;
+            }
+        }
 
-function handleOrientation(e) {
-    // gamma: Sol-Sağ eğimi (-90 ile 90 derece arası) -> rotateY'yi tetikler
-    // beta: Ön-Arka eğimi (-180 ile 180 derece arası) -> rotateX'i tetikler
-    let gamma = e.gamma || 0; 
-    let beta = e.beta || 0;
+        function handleOrientation(e) {
+            // gamma: Sol-Sağ eğimi (-90 ile 90 derece arası) -> rotateY'yi tetikler
+            // beta: Ön-Arka eğimi (-180 ile 180 derece arası) -> rotateX'i tetikler
+            let gamma = e.gamma || 0; 
+            let beta = e.beta || 0;
 
-    // Telefonun normalde dik/hafif eğik tutulduğunu varsayalım (yaklaşık 60 derece)
-    // Bu sayede kullanıcı telefonu normal tutarken kart düz görünür.
-    const idealHoldingAngle = 60; 
-    
-    let tiltX = beta - idealHoldingAngle; // Ön-arka sapma
-    let tiltY = gamma;                    // Sağ-sol sapma
+            // Telefonun normalde dik/hafif eğik tutulduğunu varsayalım (yaklaşık 60 derece)
+            // Bu sayede kullanıcı telefonu normal tutarken kart düz görünür.
+            const idealHoldingAngle = 60; 
+            
+            let tiltX = beta - idealHoldingAngle; // Ön-arka sapma
+            let tiltY = gamma;                    // Sağ-sol sapma
 
-    // Kartın aşırı dönüp bozulmaması için maksimum eğim sınırları (Örn: en fazla 15 derece)
-    const maxTilt = 15;
-    tiltX = Math.max(-maxTilt, Math.min(maxTilt, tiltX));
-    tiltY = Math.max(-maxTilt, Math.min(maxTilt, tiltY));
+            // Kartın aşırı dönüp bozulmaması için maksimum eğim sınırları (Örn: en fazla 15 derece)
+            const maxTilt = 15;
+            tiltX = Math.max(-maxTilt, Math.min(maxTilt, tiltX));
+            tiltY = Math.max(-maxTilt, Math.min(maxTilt, tiltY));
 
-    // Kartı yumuşatmak ve hareketi hissettirmek için değerleri biraz bölebilirsin
-    const sensitivity = 1.2; 
-    const finalX = -tiltX * sensitivity;
-    const finalY = tiltY * sensitivity;
+            // Kartı yumuşatmak ve hareketi hissettirmek için değerleri biraz bölebilirsin
+            const sensitivity = 1.2; 
+            const finalX = -tiltX * sensitivity;
+            const finalY = tiltY * sensitivity;
 
-    // 3D dönüşü uygula
-    wrapper.style.transform = `rotateY(${finalY}deg) rotateX(${finalX}deg)`;
-}
+            // 3D dönüşü uygula
+            wrapper.style.transform = `rotateY(${finalY}deg) rotateX(${finalX}deg)`;
+        }
 
-// Tarayıcı güvenlik politikaları gereği jiroskop izni bir kullanıcı dokunuşuyla tetiklenmelidir.
-// Kullanıcı sayfada herhangi bir yere ilk dokunduğunda veya tıkladığında sistem çalışmaya başlar.
-document.addEventListener('click', initGyroscope, { once: true });
-document.addEventListener('touchstart', initGyroscope, { once: true });
+        // Tarayıcı güvenlik politikaları gereği jiroskop izni bir kullanıcı dokunuşuyla tetiklenmelidir.
+        // Kullanıcı sayfada herhangi bir yere ilk dokunduğunda veya tıkladığında sistem çalışmaya başlar.
+        document.addEventListener('click', initGyroscope, { once: true });
+        document.addEventListener('touchstart', initGyroscope, { once: true });
         
         // REPO ÇEKME VE MOBİL UYUMLU DAĞITIM FONKSİYONU
         async function loadGitHubRepos() {
