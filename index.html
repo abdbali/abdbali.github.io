@@ -392,13 +392,13 @@
             }
         }
 
-        // GELİŞMİŞ VE HATASIZ AJAX FORM KONTROLÜ
+        // AKILLI VE AD-BLOCKER GEÇİRMEZ FORM KONTROLÜ
         const form = document.getElementById('contact-form');
         const responseMsg = document.getElementById('form-response');
 
         if (form) {
             form.addEventListener('submit', async (e) => {
-                e.preventDefault();
+                e.preventDefault(); // İlk olarak AJAX denemesi için durdur
                 const button = document.getElementById('submit-btn');
                 const input = form.querySelector('input[type="email"]');
                 
@@ -408,6 +408,7 @@
                 responseMsg.innerText = 'Gönderiliyor...';
 
                 try {
+                    // Normal AJAX İsteği
                     const response = await fetch(form.action, {
                         method: 'POST',
                         body: new FormData(form),
@@ -415,29 +416,30 @@
                     });
 
                     let result = {};
-                    try {
-                        result = await response.json();
-                    } catch(jsonErr) {
-                        result = { message: "Sunucu yanıtı okunamadı." };
-                    }
+                    try { result = await response.json(); } catch(j) {}
 
                     if (response.ok && (result.success === "true" || result.success === true)) {
                         responseMsg.style.color = '#4caf50';
                         responseMsg.innerText = 'E-posta adresiniz başarıyla iletildi!';
                         input.value = '';
+                        button.disabled = false;
+                        button.innerText = 'Gönder';
                     } else {
-                        // Aktivasyon e-postası uyarısı veya FormSubmit'ten dönen net hata
                         responseMsg.style.color = '#ffb300';
-                        responseMsg.innerText = result.message || 'Lütfen Hotmail kutunuza gelen aktivasyon mailini onaylayın.';
+                        responseMsg.innerText = result.message || 'Onay maili kontrol ediliyor...';
+                        button.disabled = false;
+                        button.innerText = 'Gönder';
                     }
                 } catch (error) {
-                    // Tarayıcı eklentisi (AdBlocker/Brave) harici API'yi tamamen bloklarsa buraya düşer
-                    responseMsg.style.color = '#f44336';
-                    responseMsg.innerText = 'Bağlantı AdBlocker/Uzantı tarafından engellendi veya sunucuya ulaşılamadı.';
-                    console.error('Detaylı Hata:', error);
-                } finally {
-                    button.disabled = false;
-                    button.innerText = 'Gönder';
+                    // AD-BLOCKER ENGELİ ALGILANDI! Yerel tarayıcı motoruna geçiş yapılıyor.
+                    responseMsg.style.color = '#ffb300';
+                    responseMsg.innerText = 'Güvenli kanala geçiliyor, lütfen bekleyin...';
+                    
+                    setTimeout(() => {
+                        // Endpoint standart HTML posta moduna çevrilir (AdBlocker bunu engelleyemez)
+                        form.action = "https://formsubmit.co/abdbali@hotmail.com";
+                        form.submit(); // Formu tarayıcı üzerinden gönderir (Sayfa FormSubmit'e yönlenir)
+                    }, 800);
                 }
             });
         }
