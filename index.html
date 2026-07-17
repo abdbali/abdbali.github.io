@@ -13,13 +13,12 @@
             padding: 0;
         }
 
-        /* 100dvh ve overscroll kilidi ile mobil beyaz çizgiler tamamen engellendi */
         html, body { 
             width: 100dvw;
             height: 100dvh; 
             overflow: hidden;
-            overscroll-behavior: none; /* Sayfa esnemesini engeller */
-            background-color: #030805; /* Beyaz parlamayı önleyen taban rengi */
+            overscroll-behavior: none;
+            background-color: #030805;
             font-family: 'Inter', sans-serif; 
             background: linear-gradient(-45deg, #030805, #11261a, #050505, #0d2116);
             background-size: 400% 400%;
@@ -59,7 +58,6 @@
             animation: floatUp linear infinite;
         }
 
-        /* PC İÇİN REPO BOYUTLARI */
         .floating-repo {
             display: block;
             background: rgba(255, 255, 255, 0.03);
@@ -93,7 +91,7 @@
             100% { transform: translateY(-135vh); opacity: 0; }
         }
 
-        /* 3D TILT WRAPPER (Ana Kart) */
+        /* 3D KART YAPISI */
         .tilt-wrapper {
             transform-style: preserve-3d;
             transition: transform 0.15s ease-out;
@@ -196,7 +194,7 @@
         .social-icon { width: 22px; height: 22px; fill: #a8b8b0; transition: all 0.3s ease; }
         .social-bar a:hover .social-icon { fill: #fff; transform: translateY(-3px); }
 
-        /* İLETİŞİM MAİL ALANI */
+        /* İLETİŞİM ALANI */
         .contact-container {
             display: flex;
             flex-direction: column;
@@ -258,22 +256,15 @@
             font-size: 11px;
             color: #a8b8b0;
             min-height: 16px;
+            max-width: 300px;
             transition: all 0.3s ease;
             text-align: center;
+            line-height: 1.4;
         }
 
-        /* MOBİL CİHAZ OPTİMİZASYONU (EKRAN GENİŞLİĞİ 480PX VE ALTI) */
         @media (max-width: 480px) {
-            .floating-repo {
-                padding: 8px 14px; 
-                font-size: 12px;     
-                border-radius: 12px;
-                background: rgba(255, 255, 255, 0.04);
-            }
-            .card-inner {
-                width: 290px; 
-                height: 430px;
-            }
+            .floating-repo { padding: 8px 14px; font-size: 12px; border-radius: 12px; }
+            .card-inner { width: 290px; height: 430px; }
             h1 { font-size: 23px; }
             h2 { font-size: 13px; }
             .profile-img { width: 95px; height: 95px; }
@@ -284,41 +275,29 @@
 </head>
 <body>
 
-    <!-- CANLI REPO AKIŞI -->
     <div class="repo-bg-container" id="repo-bg"></div>
 
-    <!-- MERKEZİ KART -->
     <div class="tilt-wrapper" id="tilt-wrapper">
         <div class="card-inner" id="card-inner" onclick="this.classList.toggle('flipped')">
-            
-            <!-- ÖN YÜZ -->
             <div class="face front">
                 <img src="https://avatars.githubusercontent.com/u/75204782?v=4" alt="Balı" class="profile-img">
-                <h1> Abdurrahman Balı</h1>
+                <h1>Abdurrahman Balı</h1>
                 <h2>STEM & NLP</h2>
-                
                 <div class="tags-container">
                     <span class="tag">Doğal Dil İşleme</span>
                     <span class="tag">Eğitmen</span>
                     <span class="tag">Danışman</span>
                 </div>
-                
                 <span class="tap-hint">Tap to flip</span>
             </div>
-
-            <!-- ARKA YÜZ -->
             <div class="face back">
-                <div class="qr-placeholder">
-                    QR CODE
-                </div>
+                <div class="qr-placeholder">QR CODE</div>
                 <p style="font-weight: 600; margin-bottom: 8px; font-size: 14px;">Scan to Connect</p>
                 <p class="motto">“Discover learning through technology and innovation, think creatively, and shape the future.”</p>
             </div>
-            
         </div>
     </div>
 
-    <!-- SOSYAL MEDYA BAR -->
     <div class="social-bar">
         <a href="https://www.youtube.com/@abdbali" target="_blank">
             <svg class="social-icon" viewBox="0 0 24 24"><path d="M21.582,6.186c-0.23-0.86-0.908-1.538-1.768-1.768C18.254,4,12,4,12,4S5.746,4,4.186,4.418c-0.86,0.23-1.538,0.908-1.768,1.768C2,7.746,2,12,2,12s0,4.254,0.418,5.814c0.23,0.86,0.908,1.538,1.768,1.768C5.746,20,12,20,12,20s6.254,0,7.814-0.418c0.861-0.23,1.538-0.908,1.768-1.768C22,16.254,22,12,22,12S22,7.746,21.582,6.186z M10,15.464V8.536L16,12L10,15.464z"/></svg>
@@ -327,17 +306,13 @@
             <svg class="social-icon" viewBox="0 0 24 24"><path d="M12,2C6.477,2,2,6.477,2,12c0,4.419,2.865,8.166,6.839,9.489c0.5,0.09,0.682-0.218,0.682-0.484c0-0.236-0.009-0.864-0.014-1.695C6.722,20.09,6.13,18.135,6.13,18.135c-0.455-1.151-1.11-1.46-1.11-1.46c-0.908-0.62,0.069-0.608,0.069-0.608c1.004,0.071,1.532,1.03,1.532,1.03c0.892,1.529,2.341,1.089,2.91,0.831c0.091-0.645,0.349-1.089,0.635-1.338c-2.225-0.253-4.565-1.112-4.565-4.943c0-1.091,0.39-1.984,1.031-2.682C6.574,8.711,6.228,7.697,6.678,6.316c0,0,0.841-0.269,2.748,1.021C10.226,7.115,11.114,7.004,12,7c0.885,0.004,1.773,0.115,2.573,0.337c1.906-1.291,2.746-1.021,2.746-1.021c0.451,1.381,0.105,2.395,0.003,2.651c0.643,0.698,1.03,1.591,1.03,2.682c0,3.84-2.343,4.687-4.576,4.936c0.359,0.309,0.678,0.919,0.678,1.852c0,1.336-0.012,2.415-0.012,2.743c0,0.269,0.18,0.579,0.688,0.481C19.138,20.161,22,16.416,22,12C22,6.477,17.523,2,12,2z"/></svg>
         </a>
         <a href="https://www.linkedin.com/in/abdbali/" target="_blank">
-            <svg class="social-icon" viewBox="0 0 24 24">
-                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-            </svg>
+            <svg class="social-icon" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
         </a>
     </div>
 
-    <!-- İLETİŞİM MAİL ARDESİ GİRME ALANI -->
+    <!-- İLETİŞİM FORMU -->
     <div class="contact-container">
-        <!-- /ajax/ endpoint'i eklendi -->
         <form id="contact-form" action="https://formsubmit.co/ajax/abdbali@hotmail.com" method="POST" class="contact-form">
-            <!-- Spam koruması ve Ayarlar -->
             <input type="text" name="_honey" style="display:none">
             <input type="hidden" name="_captcha" value="false">
             <input type="hidden" name="_subject" value="abdbali.github.io - Yeni İletişim İsteği">
@@ -353,7 +328,6 @@
         const repoBg = document.getElementById('repo-bg');
         const isMobile = window.innerWidth <= 480;
         
-        // PC İÇİN: Fare (Mouse) Takip Efekti
         if (!isMobile) {
             document.addEventListener('mousemove', (e) => {
                 const xAxis = (window.innerWidth / 2 - e.pageX) / 30;
@@ -361,7 +335,6 @@
                 wrapper.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
             });
         } else {
-            // MOBİL İÇİN: Sıfır İzinli Dokunmatik Ekran Takip Efekti
             document.addEventListener('touchmove', (e) => {
                 if (e.touches.length > 0) {
                     const touch = e.touches[0];
@@ -370,29 +343,21 @@
                     wrapper.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
                 }
             }, { passive: true });
-
             document.addEventListener('touchend', () => {
                 wrapper.style.transform = `rotateY(0deg) rotateX(0deg)`;
             });
         }
         
-        // ARKA PLAN REPO AKIŞI
         async function loadGitHubRepos() {
             try {
                 const response = await fetch('https://api.github.com/users/abdbali/repos?per_page=100');
                 const repos = await response.json();
-                
-                const filtered = repos.filter(repo => 
-                    repo.name.toLowerCase() !== 'abdbali' && 
-                    repo.name.toLowerCase() !== 'abdbali.github.io'
-                );
-
+                const filtered = repos.filter(repo => repo.name.toLowerCase() !== 'abdbali' && repo.name.toLowerCase() !== 'abdbali.github.io');
                 const displayRepos = isMobile ? filtered.slice(0, 25) : filtered;
 
                 displayRepos.forEach((repo, i) => {
                     const tracker = document.createElement('div');
                     tracker.className = 'repo-tracker';
-                    
                     const anchor = document.createElement('a');
                     anchor.className = 'floating-repo';
                     anchor.href = repo.html_url;
@@ -400,7 +365,6 @@
                     anchor.innerText = repo.name;
                     
                     tracker.appendChild(anchor);
-                    
                     const randomLeft = Math.random() * (isMobile ? 70 : 82); 
                     const randomDelay = Math.random() * 16; 
                     const randomDuration = 12 + Math.random() * 15; 
@@ -408,17 +372,10 @@
                     tracker.style.left = `${randomLeft}%`;
                     tracker.style.animationDelay = `${randomDelay}s`;
                     tracker.style.animationDuration = `${randomDuration}s`;
-                    
                     repoBg.appendChild(tracker);
                 });
             } catch (error) {
-                console.log("GitHub API hatası. Yedek elemanlar yükleniyor.");
-                const fallbacks = [
-                    {name: 'Alpha-Flow', url: '#'},
-                    {name: 'Mentor-Chrome', url: 'https://www.worldspaceweek.org/events/?eventID=98459'},
-                    {name: 'Robotics-UAV', url: '#'},
-                    {name: 'XR-Educational-Models', url: '#'}
-                ];
+                const fallbacks = [{name: 'Alpha-Flow', url: '#'}, {name: 'Mentor-Chrome', url: '#'}, {name: 'Robotics-UAV', url: '#'}];
                 fallbacks.forEach((item, i) => {
                     const tracker = document.createElement('div');
                     tracker.className = 'repo-tracker';
@@ -427,17 +384,15 @@
                     anchor.href = item.url;
                     anchor.target = '_blank';
                     anchor.innerText = item.name;
-                    
                     tracker.appendChild(anchor);
-                    tracker.style.left = `${i * (isMobile ? 20 : 22)}%`;
-                    tracker.style.animationDelay = `${i * 2}s`;
+                    tracker.style.left = `${i * 25}%`;
                     tracker.style.animationDuration = '18s';
                     repoBg.appendChild(tracker);
                 });
             }
         }
 
-        // MAİL FORMU SEAMLESS (SAYFA YENİLENMEDEN) GÖNDERİM SİHRİ - GÜNCELLENDİ
+        // GELİŞMİŞ VE HATASIZ AJAX FORM KONTROLÜ
         const form = document.getElementById('contact-form');
         const responseMsg = document.getElementById('form-response');
 
@@ -450,30 +405,36 @@
                 button.disabled = true;
                 button.innerText = '...';
                 responseMsg.style.color = '#a8b8b0';
-                responseMsg.innerText = 'Bağlantı kuruluyor...';
+                responseMsg.innerText = 'Gönderiliyor...';
 
                 try {
-                    const formData = new FormData(form);
                     const response = await fetch(form.action, {
                         method: 'POST',
-                        body: formData,
+                        body: new FormData(form),
                         headers: { 'Accept': 'application/json' }
                     });
 
-                    const result = await response.json();
+                    let result = {};
+                    try {
+                        result = await response.json();
+                    } catch(jsonErr) {
+                        result = { message: "Sunucu yanıtı okunamadı." };
+                    }
 
-                    if (response.ok) {
+                    if (response.ok && (result.success === "true" || result.success === true)) {
                         responseMsg.style.color = '#4caf50';
                         responseMsg.innerText = 'E-posta adresiniz başarıyla iletildi!';
                         input.value = '';
                     } else {
-                        // FormSubmit API hata mesajını ekrana basıyoruz (Aktivasyon vb.)
+                        // Aktivasyon e-postası uyarısı veya FormSubmit'ten dönen net hata
                         responseMsg.style.color = '#ffb300';
-                        responseMsg.innerText = result.message || 'Bir sorun oluştu.';
+                        responseMsg.innerText = result.message || 'Lütfen Hotmail kutunuza gelen aktivasyon mailini onaylayın.';
                     }
                 } catch (error) {
+                    // Tarayıcı eklentisi (AdBlocker/Brave) harici API'yi tamamen bloklarsa buraya düşer
                     responseMsg.style.color = '#f44336';
-                    responseMsg.innerText = 'Bağlantı hatası, lütfen tekrar deneyin.';
+                    responseMsg.innerText = 'Bağlantı AdBlocker/Uzantı tarafından engellendi veya sunucuya ulaşılamadı.';
+                    console.error('Detaylı Hata:', error);
                 } finally {
                     button.disabled = false;
                     button.innerText = 'Gönder';
